@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fixed-Time Traffic Light Program for Baseline Comparison -->
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+
+    <!-- 
+    Fixed-Time Signal Plan
+    Based on typical 3-phase operation for T-intersection
+    
+    Cycle Length: 75 seconds
+    - R1 (East-West): 25s green + 3s yellow
+    - R2 (West-East): 25s green + 3s yellow  
+    - R3 (North): 14s green + 3s yellow
+    - All-red: 1s between each phase
+    
+    This represents a "well-designed" fixed-time plan with:
+    - Equal time for major roads (R1, R2)
+    - Less time for minor road (R3)
+    - Standard yellow and clearance intervals
+    -->
+    
+    <tlLogic id="center" type="static" programID="fixed" offset="0">
+        <!-- Phase 1: R1 GREEN (East approach) -->
+        <!-- Duration: 25 seconds -->
+        <!-- R1=GREEN, R2=RED, R3=RED -->
+        <phase duration="25" state="GGrrrr"/>
+        
+        <!-- Phase 1: R1 YELLOW -->
+        <!-- Duration: 3 seconds -->
+        <phase duration="3" state="yyrrrr"/>
+        
+        <!-- All-Red Clearance -->
+        <!-- Duration: 1 second -->
+        <phase duration="1" state="rrrrrr"/>
+        
+        <!-- Phase 2: R2 GREEN (West approach) -->
+        <!-- Duration: 25 seconds -->
+        <!-- R1=RED, R2=GREEN, R3=RED -->
+        <phase duration="25" state="rrGGrr"/>
+        
+        <!-- Phase 2: R2 YELLOW -->
+        <!-- Duration: 3 seconds -->
+        <phase duration="3" state="rryyrr"/>
+        
+        <!-- All-Red Clearance -->
+        <!-- Duration: 1 second -->
+        <phase duration="1" state="rrrrrr"/>
+        
+        <!-- Phase 3: R3 GREEN (North approach) -->
+        <!-- Duration: 14 seconds -->
+        <!-- R1=RED, R2=RED, R3=GREEN -->
+        <phase duration="14" state="rrrrGG"/>
+        
+        <!-- Phase 3: R3 YELLOW -->
+        <!-- Duration: 3 seconds -->
+        <phase duration="3" state="rrrryy"/>
+        
+        <!-- All-Red Clearance -->
+        <!-- Duration: 1 second -->
+        <phase duration="1" state="rrrrrr"/>
+        
+        <!-- Total Cycle: 75 seconds -->
+    </tlLogic>
+
+    <!--
+    ALTERNATIVE: Equal Time Distribution (if you want to be "fair")
+    Cycle: 69 seconds
+    Each approach: 20s green + 3s yellow
+    -->
+    
+    <tlLogic id="center" type="static" programID="equal" offset="0">
+        <!-- R1: 20s green -->
+        <phase duration="20" state="GGrrrr"/>
+        <phase duration="3" state="yyrrrr"/>
+        <phase duration="1" state="rrrrrr"/>
+        
+        <!-- R2: 20s green -->
+        <phase duration="20" state="rrGGrr"/>
+        <phase duration="3" state="rryyrr"/>
+        <phase duration="1" state="rrrrrr"/>
+        
+        <!-- R3: 20s green -->
+        <phase duration="20" state="rrrrGG"/>
+        <phase duration="3" state="rrrryy"/>
+        <phase duration="1" state="rrrrrr"/>
+        
+        <!-- Total Cycle: 69 seconds -->
+    </tlLogic>
+    
+    <!--
+    To use this file:
+    1. Save as "fixed_timing.add.xml"
+    2. Create simulation config that references this file
+    3. Run: sumo -c simulation_fixed.sumocfg
+    4. Compare results with adaptive system
+    -->
+
+</additional>
